@@ -1,5 +1,5 @@
-const Card = (article) => {
-  // TASK 5
+import axios from "axios";
+// TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
   // It takes as its only argument an "article" object with `headline`, `authorPhoto` and `authorName` properties.
@@ -17,9 +17,69 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+const Card = (article) => {
+
+  const articleCard = document.createElement('div');
+  const articleHeadline = document.createElement('div');
+  const authorContainer = document.createElement('div');
+  const imageContainer =document.createElement('div');
+  const articleImage = document.createElement('img');
+  const articleAuthor = document.createElement('span');
+
+  articleHeadline.textContent = article.headline;
+  articleImage.src = article.authorPhoto;
+  articleAuthor.textContent = article.authorName;
+
+  articleCard.classList.add('card');
+  articleHeadline.classList.add('headline');
+  authorContainer.classList.add('author');
+  imageContainer.classList.add('img-container');
+
+  articleCard.appendChild(articleHeadline);
+  articleCard.appendChild(authorContainer);
+  authorContainer.appendChild(imageContainer);
+  imageContainer.appendChild(articleImage);
+  authorContainer.appendChild(articleAuthor);
+
+  articleCard.addEventListener('click', () => {
+    console.log(articleHeadline.textContent)
+  })
+
+  return articleCard;
 }
 
 const cardAppender = (selector) => {
+
+  axios.get(`http://localhost:5000/api/articles`)
+  .then(res => {
+
+    let articleList = null;
+
+    for(let i = 0; i < res.data.articles.javascript.length; i++){
+      articleList = Card(res.data.articles.javascript[i])
+      document.querySelector(selector).appendChild(articleList)
+    }
+    for(let i = 0; i < res.data.articles.bootstrap.length; i++){
+      articleList = Card(res.data.articles.bootstrap[i])
+      document.querySelector(selector).appendChild(articleList)
+    }
+    for(let i = 0; i < res.data.articles.technology.length; i++){
+      articleList = Card(res.data.articles.technology[i])
+      document.querySelector(selector).appendChild(articleList)
+    }
+    for(let i = 0; i < res.data.articles.jquery.length; i++){
+      articleList = Card(res.data.articles.jquery[i])
+      document.querySelector(selector).appendChild(articleList)
+    }
+    for(let i = 0; i < res.data.articles.node.length; i++){
+      articleList = Card(res.data.articles.node[i])
+      document.querySelector(selector).appendChild(articleList)
+    }
+  })
+  .catch(err => {
+    console.error(err)
+  })
+
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.

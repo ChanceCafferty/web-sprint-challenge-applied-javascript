@@ -1,3 +1,4 @@
+import axios from "axios";
 const Tabs = (topics) => {
 
   const tabBar = document.createElement('div');
@@ -13,7 +14,10 @@ const Tabs = (topics) => {
     tabBar.appendChild(tabList);
   })
 
-  // TASK 3
+  return tabBar;
+}
+
+// TASK 3
   // ---------------------
   // Implement this function which takes an array of strings ("topics") as its only argument.
   // As an example, if the topics passed are ['javascript', 'bootstrap', 'technology']
@@ -27,12 +31,12 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
-}
 
 const tabsAppender = (selector) => {
 
   axios.get(`http://localhost:5000/api/topics`)
   .then(res => {
+    console.log(res)
     const tabList = Tabs(res.data.topics);
     document.querySelector(selector).appendChild(tabList);
   })
